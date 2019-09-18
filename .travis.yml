@@ -22,7 +22,6 @@ env:
   - MINOR_RELEASE="minor"
   - MAJOR_RELEASE="major"
 
-
 matrix:
   allow_failures:
   - stage: acceptance-test
@@ -35,7 +34,7 @@ matrix:
     if: type != cron AND commit_message !~ env(SHOP_SYSTEM_UPDATE_COMMIT) AND commit_message !~ env(MANUAL_UITEST_TRIGGER_COMMIT)
   - php: 7.2
     if: type != cron AND commit_message !~ env(SHOP_SYSTEM_UPDATE_COMMIT) AND commit_message !~ env(MANUAL_UITEST_TRIGGER_COMMIT)
-  # nigthly get latest shopware versions and store them in shop-releases.txt
+    # nigthly get latest shopware versions and store them in shop-releases.txt
   - stage: get-magento-versions
     if: type = cron
     php: 7.2
@@ -46,17 +45,17 @@ matrix:
     after_failure: skip
   - &acceptance-test
     stage: acceptance-test
-    #   run this stage on pull request if head branch name contains one of these words (batch, major, minor)
-    #   or when there is a new shop system version
-    #   or when build triggered ad-hoc with special commit message
-    #   tests will use extension version = branch master (in case of new shop system version)
-    #   or branch which originated pull request
-    #   or branch which was defined in ad-hoc trigger in Travis UI
+    # run this stage on pull request if head branch name contains one of these words (batch, major, minor)
+    # or when there is a new shop system version
+    # or when build triggered ad-hoc with special commit message
+    # tests will use extension version = branch master (in case of new shop system version)
+    # or branch which originated pull request
+    # or branch which was defined in ad-hoc trigger in Travis UI
     if: (type = pull_request AND (head_branch =~ env(BATCH_RELEASE) OR head_branch =~ env(MINOR_RELEASE) OR head_branch =~ env(MAJOR_RELEASE))) OR (commit_message =~ env(SHOP_SYSTEM_UPDATE_COMMIT)) OR (commit_message =~ env(MANUAL_UITEST_TRIGGER_COMMIT))
     php: 7.2
     env:
     - GATEWAY=API-TEST
-    #     magento version - first line in MAGENTO_RELEASES_FILE
+    # magento version - first line in MAGENTO_RELEASES_FILE
     -  MAGENTO_RELEASE_VERSION=1
     before_script:
     - cd ${TRAVIS_BUILD_DIR}
@@ -72,37 +71,37 @@ matrix:
     after_script: skip
     after_success: bash ./build/bin/upload-logs-and-notify.sh
     after_failure: bash ./build/bin/upload-logs-and-notify.sh fail
-    #   run this stage when shop system updated with latest shop extension release version
-    #   tests will use latest released extension version
+    # run this stage when shop system updated with latest shop extension release version
+    # tests will use latest released extension version
   - <<: *acceptance-test
     # when commit message contains string "Update latest shop releases"
     if: commit_message =~ env(SHOP_SYSTEM_UPDATE_COMMIT)
     env:
     - GATEWAY=API-TEST
-    #    magento version - 2nd line in MAGENTO_RELEASES_FILE
+    # magento version - 2nd line in MAGENTO_RELEASES_FILE
     - MAGENTO_RELEASE_VERSION=2
-    #   run this stage when shop system updated with latest shop extension release version
-    #   tests will use latest released extension version
+    # run this stage when shop system updated with latest shop extension release version
+    # tests will use latest released extension version
   - <<: *acceptance-test
     # when commit message contains string "Update latest shop releases"
     if: commit_message =~ env(SHOP_SYSTEM_UPDATE_COMMIT)
     env:
     - GATEWAY=API-TEST
-    #    magento version - 3rd line in MAGENTO_RELEASES_FILE
+    # magento version - 3rd line in MAGENTO_RELEASES_FILE
     - MAGENTO_RELEASE_VERSION=3
-  #   run this stage when shop system updated with latest shop extension release version
-  #   tests will use latest released extension version
+    # run this stage when shop system updated with latest shop extension release version
+    # tests will use latest released extension version
   - <<: *acceptance-test
     # when commit message contains string "Update latest shop releases"
     if: commit_message =~ env(SHOP_SYSTEM_UPDATE_COMMIT)
     env:
     - GATEWAY=API-TEST
-    #    magento version - 1st line in MAGENTO_RELEASES_FILE
+    # magento version - 1st line in MAGENTO_RELEASES_FILE
     - MAGENTO_RELEASE_VERSION=1
     - LATEST_EXTENSION_RELEASE=1
 
 before_install:
-#get apache
+# get apache
 - sudo apt-get update
 - sudo apt-get install apache2 libapache2-mod-fastcgi
 - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
@@ -121,7 +120,6 @@ before_install:
 # prepare database with sample data
 - mysql -e 'CREATE DATABASE magento;'
 - mysql -u travis magento < build/bin/magento_sample_data_for_1.9.2.4.sql
-
 
 install:
 - travis_retry composer install $COMPOSER_ARGS
@@ -148,12 +146,10 @@ install:
 # activate symlinks so plugin is displayed in the shop
 - $n98 dev:symlinks 1
 
-
 script:
 - composer cs-check
 - composer test-coverage
 - build/bin/find-sensitive-data
-
 
 after_script:
 - travis_retry composer upload-coverage
