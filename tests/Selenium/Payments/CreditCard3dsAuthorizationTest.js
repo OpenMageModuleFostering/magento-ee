@@ -7,6 +7,7 @@
  */
 
 let mysql = require('mysql');
+let sleep = require('sleep');
 const { By, until, Key } = require('selenium-webdriver');
 const {
   waitForAlert,
@@ -42,12 +43,14 @@ describe('Credit Card 3-D Secure Authorization test', () => {
     con.connect(function(err) {
       if (err) throw err;
       console.log("Database connection established.");
-      let sql = "UPDATE core_config_data SET scope = 'default', scope_id = 0, path = 'payment/wirecardee_paymentgateway_creditcard/transaction_type', value = 'reserve' WHERE path = 'payment/wirecardee_paymentgateway_creditcard/transaction_type'";
+      let sql = "UPDATE core_config_data SET value = 'reserve' WHERE path = 'payment/wirecardee_paymentgateway_creditcard/transaction_type'";
       con.query(sql, function (err, result) {
         if (err) throw err;
         console.log("Transaction type successful changed.");
       });
     });
+
+    sleep.sleep(20);
 
     await addProductToCartAndGotoCheckout(driver, '/flapover-briefcase.html');
     await fillOutGuestCheckout(driver);
