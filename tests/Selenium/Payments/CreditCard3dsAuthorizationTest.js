@@ -30,31 +30,31 @@ describe('Credit Card 3-D Secure Authorization test', () => {
   const paymentLabel = config.payments.creditCard3ds.label;
   const formFields = config.payments.creditCard3ds.fields;
 
+  let con = mysql.createConnection({
+    host: "127.0.0.1",
+    user: "travis",
+    password: "",
+    database: "magento"
+  });
+
+  con.connect(function(err) {
+    if (err) throw err;
+    console.log("Database connection established.");
+    let sql = "UPDATE core_config_data SET value = 'reserve' WHERE path = 'payment/wirecardee_paymentgateway_creditcard/transaction_type'";
+    con.query(sql, function (err, result) {
+      if (err) throw err;
+      console.log("Transaction type successful changed.");
+    });
+  });
+
+  console.log("Check if entered.");
+
+  con.query("SELECT value FROM core_config_data WHERE path = 'payment/wirecardee_paymentgateway_creditcard/transaction_type'", function (err, result, fields) {
+    if (err) throw err;
+    console.log(result);
+  });
+
   it('should check the credit card 3ds authorization payment process', async () => {
-
-    let con = mysql.createConnection({
-      host: "127.0.0.1",
-      user: "travis",
-      password: "",
-      database: "magento"
-    });
-
-    con.connect(function(err) {
-      if (err) throw err;
-      console.log("Database connection established.");
-      let sql = "UPDATE core_config_data SET value = 'reserve' WHERE path = 'payment/wirecardee_paymentgateway_creditcard/transaction_type'";
-      con.query(sql, function (err, result) {
-        if (err) throw err;
-        console.log("Transaction type successful changed.");
-      });
-    });
-
-    console.log("Check if entered.");
-
-    con.query("SELECT value FROM core_config_data WHERE path = 'payment/wirecardee_paymentgateway_creditcard/transaction_type'", function (err, result, fields) {
-      if (err) throw err;
-      console.log(result);
-    });
 
     await addProductToCartAndGotoCheckout(driver, '/flapover-briefcase.html');
     await fillOutGuestCheckout(driver);
