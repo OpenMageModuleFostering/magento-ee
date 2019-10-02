@@ -41,7 +41,7 @@ describe('Credit Card 3-D Secure Authorization test', () => {
     con.connect(function(err) {
       if (err) throw err;
       console.log("Connected!");
-      let sql = "INSERT INTO core_config_data (scope, scope_id, path, value) VALUES ('default',0,'payment/wirecardee_paymentgateway_creditcard/transaction_type','reserve')";
+      let sql = "UPDATE core_config_data SET scope = 'default', scope_id = 0, path = 'payment/wirecardee_paymentgateway_creditcard/transaction_type', value = 'reserve' WHERE path = 'payment/wirecardee_paymentgateway_creditcard/transaction_type'";
       con.query(sql, function (err, result) {
         if (err) throw err;
         console.log("1 record inserted");
