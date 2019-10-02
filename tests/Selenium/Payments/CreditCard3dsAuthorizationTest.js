@@ -5,6 +5,7 @@
  * - License can be found under:
  * https://github.com/wirecard/magento-ee/blob/master/LICENSE
  */
+
 let mysql = require('mysql');
 const { By, until, Key } = require('selenium-webdriver');
 const {
@@ -40,11 +41,11 @@ describe('Credit Card 3-D Secure Authorization test', () => {
 
     con.connect(function(err) {
       if (err) throw err;
-      console.log("Connected!");
+      console.log("Database connection established.");
       let sql = "UPDATE core_config_data SET scope = 'default', scope_id = 0, path = 'payment/wirecardee_paymentgateway_creditcard/transaction_type', value = 'reserve' WHERE path = 'payment/wirecardee_paymentgateway_creditcard/transaction_type'";
       con.query(sql, function (err, result) {
         if (err) throw err;
-        console.log("1 record inserted");
+        console.log("Transaction type successful changed.");
       });
     });
 
@@ -74,10 +75,12 @@ describe('Credit Card 3-D Secure Authorization test', () => {
     await waitForAlert(driver, 10000);
     await checkConfirmationPage(driver, 'Thank you for your purchase!');
 
-    con.query("SELECT * FROM core_config_data", function (err, result, fields) {
+    con.query("SELECT txn_txpe FROM sales_payment_transaction WHERE DESC LIMIT 1", function (err, result, fields) {
       if (err) throw err;
       console.log(result);
     });
+
+    con.end();
   });
 
   after(async () => driver.quit());
