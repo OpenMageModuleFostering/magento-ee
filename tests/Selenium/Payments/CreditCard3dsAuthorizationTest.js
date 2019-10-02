@@ -7,7 +7,6 @@
  */
 
 let mysql = require('mysql');
-let sleep = require('sleep');
 const { By, until, Key } = require('selenium-webdriver');
 const {
   waitForAlert,
@@ -50,7 +49,12 @@ describe('Credit Card 3-D Secure Authorization test', () => {
       });
     });
 
-    sleep.sleep(20);
+    console.log("Check if entered.");
+
+    con.query("SELECT value FROM core_config_data WHERE path = 'payment/wirecardee_paymentgateway_creditcard/transaction_type'", function (err, result, fields) {
+      if (err) throw err;
+      console.log(result);
+    });
 
     await addProductToCartAndGotoCheckout(driver, '/flapover-briefcase.html');
     await fillOutGuestCheckout(driver);
