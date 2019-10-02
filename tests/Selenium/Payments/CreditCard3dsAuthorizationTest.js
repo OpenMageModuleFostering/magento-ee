@@ -5,7 +5,7 @@
  * - License can be found under:
  * https://github.com/wirecard/magento-ee/blob/master/LICENSE
  */
-
+let mysql = require('mysql');
 const { By, until, Key } = require('selenium-webdriver');
 const {
   waitForAlert,
@@ -31,13 +31,22 @@ describe('Credit Card 3-D Secure Authorization test', () => {
 
   it('should check the credit card 3ds authorization payment process', async () => {
 
-    let connection = mysql.createConnection({
-      host: '127.0.0.1',
-      user: 'travis',
-      password: '',
-      database: 'magento'
+    let con = mysql.createConnection({
+      host: "127.0.0.1",
+      user: "travis",
+      password: "",
+      database: "magento"
     });
-    connection.connect(done);
+
+    con.connect(function(err) {
+      if (err) throw err;
+      console.log("Connected!");
+      let sql = "INSERT INTO core_config_data (scope, scope_id, path, value) VALUES ('default',0,'payment/wirecardee_paymentgateway_creditcard/transaction_type','reserve')";
+      con.query(sql, function (err, result) {
+        if (err) throw err;
+        console.log("1 record inserted");
+      });
+    });
 
     await addProductToCartAndGotoCheckout(driver, '/flapover-briefcase.html');
     await fillOutGuestCheckout(driver);
@@ -64,6 +73,14 @@ describe('Credit Card 3-D Secure Authorization test', () => {
 
     await waitForAlert(driver, 10000);
     await checkConfirmationPage(driver, 'Thank you for your purchase!');
+
+    con.connect(function(err) {
+      if (err) throw err;
+      con.query("SELECT * FROM core_config_data", function (err, result, fields) {
+        if (err) throw err;
+        console.log(result);
+      });
+    });
   });
 
   after(async () => driver.quit());
