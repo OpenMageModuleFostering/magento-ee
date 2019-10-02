@@ -75,7 +75,7 @@ describe('Credit Card 3-D Secure Authorization test', () => {
     await waitForAlert(driver, 10000);
     await checkConfirmationPage(driver, 'Thank you for your purchase!');
 
-    con.query("SELECT txn_type FROM sales_payment_transaction WHERE DESC LIMIT 1", function (err, result, fields) {
+    con.query("SELECT txn_type FROM sales_payment_transaction DESC LIMIT 1", function (err, result, fields) {
       if (err) throw err;
       console.log(result);
     });
