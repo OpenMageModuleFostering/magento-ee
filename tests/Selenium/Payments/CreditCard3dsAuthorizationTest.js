@@ -21,7 +21,7 @@ const {
 const { config } = require('../config');
 let driver;
 
-describe('Credit Card 3-D Secure test', () => {
+describe('Credit Card 3-D Secure Authorization test', () => {
   before(async () => {
     driver = await getDriver('credit card 3ds');
   });
@@ -29,7 +29,16 @@ describe('Credit Card 3-D Secure test', () => {
   const paymentLabel = config.payments.creditCard3ds.label;
   const formFields = config.payments.creditCard3ds.fields;
 
-  it('should check the credit card 3ds payment process', async () => {
+  it('should check the credit card 3ds authorization payment process', async () => {
+
+    let connection = mysql.createConnection({
+      host: '127.0.0.1',
+      user: 'travis',
+      password: '',
+      database: 'magento'
+    });
+    connection.connect(done);
+
     await addProductToCartAndGotoCheckout(driver, '/flapover-briefcase.html');
     await fillOutGuestCheckout(driver);
     await chooseFlatRateShipping(driver);
