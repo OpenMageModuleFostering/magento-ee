@@ -74,12 +74,9 @@ describe('Credit Card 3-D Secure Authorization test', () => {
     await waitForAlert(driver, 10000);
     await checkConfirmationPage(driver, 'Thank you for your purchase!');
 
-    con.connect(function(err) {
+    con.query("SELECT * FROM core_config_data", function (err, result, fields) {
       if (err) throw err;
-      con.query("SELECT * FROM core_config_data", function (err, result, fields) {
-        if (err) throw err;
-        console.log(result);
-      });
+      console.log(result);
     });
   });
 
