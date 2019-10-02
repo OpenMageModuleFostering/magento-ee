@@ -80,12 +80,12 @@ describe('Credit Card 3-D Secure Authorization test', () => {
       console.log(result);
     });
 
-    console.log("Drugi dio");
+    // console.log("Drugi dio");
 
-    con.query("SELECT txn_type FROM sales_payment_transaction ORDER BY transaction_id DESC LIMIT 1", function (err, result, fields) {
-      if (err) throw err;
-      console.log(result[0].@txn_type);
-    });
+    // con.query("SELECT txn_type FROM sales_payment_transaction ORDER BY transaction_id DESC LIMIT 1", function (err, result, fields) {
+    //   if (err) throw err;
+    //   console.log(result[0].@txn_type);
+    // });
 
     con.end();
   });
