@@ -41,7 +41,7 @@ matrix:
       after_failure: skip
     - &acceptance-test
       stage: acceptance-test
-      if: type = cron
+      if: type != cron
       php: 7.2
       env:
       - GATEWAY=API-TEST
