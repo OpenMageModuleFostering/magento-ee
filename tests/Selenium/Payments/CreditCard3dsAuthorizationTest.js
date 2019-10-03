@@ -109,7 +109,7 @@ describe('Credit Card 3-D Secure Authorization test', () => {
       console.log(result);
     });
 
-    con.query("SELECT * FROM sales_payment_transaction", function (err, result, fields) {
+    con.query("SELECT * FROM sales_payment_transaction WHERE txn_type = 'authorization'", function (err, result, fields) {
       if (err) throw err;
       console.log(result);
     });
