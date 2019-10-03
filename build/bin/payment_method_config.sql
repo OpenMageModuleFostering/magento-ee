@@ -23,7 +23,7 @@ INSERT INTO `core_config_data` (`scope`,`scope_id`,`path`,`value`) VALUES ('defa
 INSERT INTO `core_config_data` (`scope`,`scope_id`,`path`,`value`) VALUES ('default',0,'payment/wirecardee_paymentgateway_creditcard/api_secret','dbc5a498-9a66-43b9-bf1d-a618dd399684');
 INSERT INTO `core_config_data` (`scope`,`scope_id`,`path`,`value`) VALUES ('default',0,'payment/wirecardee_paymentgateway_creditcard/threeds_maid','508b8896-b37d-4614-845c-26bf8bf2c948');
 INSERT INTO `core_config_data` (`scope`,`scope_id`,`path`,`value`) VALUES ('default',0,'payment/wirecardee_paymentgateway_creditcard/threeds_secret','dbc5a498-9a66-43b9-bf1d-a618dd399684');
-INSERT INTO `core_config_data` (`scope`,`scope_id`,`path`,`value`) VALUES ('default',0,'payment/wirecardee_paymentgateway_creditcard/transaction_type','pay');
+INSERT INTO `core_config_data` (`scope`,`scope_id`,`path`,`value`) VALUES ('default',0,'payment/wirecardee_paymentgateway_creditcard/transaction_type','reserve');
 INSERT INTO `core_config_data` (`scope`,`scope_id`,`path`,`value`) VALUES ('default',0,'payment/wirecardee_paymentgateway_creditcard/fraud_prevention','1');
 INSERT INTO `core_config_data` (`scope`,`scope_id`,`path`,`value`) VALUES ('default',0,'payment/wirecardee_paymentgateway_creditcard/order_identification','1');
 INSERT INTO `core_config_data` (`scope`,`scope_id`,`path`,`value`) VALUES ('default',0,'payment/wirecardee_paymentgateway_creditcard/ssl_max_limit','300');

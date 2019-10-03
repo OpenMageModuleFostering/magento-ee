@@ -37,17 +37,30 @@ describe('Credit Card 3-D Secure Authorization test', () => {
     database: "magento"
   });
 
-  con.connect(function(err) {
-    if (err) throw err;
-    console.log("Database connection established.");
-    let sql = "UPDATE core_config_data SET value = 'reserve' WHERE path = 'payment/wirecardee_paymentgateway_creditcard/transaction_type'";
-    con.query(sql, function (err, result) {
-      if (err) throw err;
-      console.log("Transaction type successful changed.");
-    });
+  // update statment
+  let sql = `UPDATE core_config_data
+           SET value = ?
+           WHERE path = ?`;
+
+  let data = ['pay', 'payment/wirecardee_paymentgateway_creditcard/transaction_type'];
+
+// execute the UPDATE statement
+  con.query(sql, data, (error, results, fields) => {
+    if (error){
+      return console.error(error.message);
+    }
+    console.log('Database has been updated!');
   });
 
-  console.log("Check if entered.");
+  // con.connect(function(err) {
+  //   if (err) throw err;
+  //   console.log("Database connection established.");
+  //   let sql = "UPDATE core_config_data SET value = 'reserve' WHERE path = 'payment/wirecardee_paymentgateway_creditcard/transaction_type'";
+  //   con.query(sql, function (err, result) {
+  //     if (err) throw err;
+  //     console.log("Transaction type successful changed.");
+  //   });
+  // });
 
   con.query("SELECT value FROM core_config_data WHERE path = 'payment/wirecardee_paymentgateway_creditcard/transaction_type'", function (err, result, fields) {
     if (err) throw err;
