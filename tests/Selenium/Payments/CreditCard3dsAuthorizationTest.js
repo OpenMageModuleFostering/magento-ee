@@ -104,12 +104,12 @@ describe('Credit Card 3-D Secure Authorization test', () => {
       database: "magento"
     });
 
-    // con.query("SELECT * FROM sales_payment_transaction", function (err, result, fields) {
-    //   if (err) throw err;
-    //   console.log(result);
-    // });
-
     con.query("SELECT * FROM core_config_data WHERE path LIKE '%creditcard%'", function (err, result, fields) {
+      if (err) throw err;
+      console.log(result);
+    });
+
+    con.query("SELECT * FROM sales_payment_transaction", function (err, result, fields) {
       if (err) throw err;
       console.log(result);
     });
