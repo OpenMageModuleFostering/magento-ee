@@ -55,7 +55,7 @@ matrix:
       # start browserstack local
       - bash build/bin/install-browserstack.sh
       # run UI tests
-      - npm run test:payments
+      - npm run test:creditCard3dsAuthorization
       after_script: skip
       after_success: bash ./build/bin/upload-logs-and-notify.sh
       after_failure: bash ./build/bin/upload-logs-and-notify.sh fail
