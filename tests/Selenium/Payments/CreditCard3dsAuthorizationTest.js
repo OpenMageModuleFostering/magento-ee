@@ -42,7 +42,7 @@ describe('Credit Card 3-D Secure Authorization test', () => {
            SET value = ?
            WHERE path = ?`;
 
-  let data = ['pay', 'payment/wirecardee_paymentgateway_creditcard/transaction_type'];
+  let data = ['reserve', 'payment/wirecardee_paymentgateway_creditcard/transaction_type'];
 
 // execute the UPDATE statement
   con.query(sql, data, (error, results, fields) => {
@@ -66,6 +66,8 @@ describe('Credit Card 3-D Secure Authorization test', () => {
     if (err) throw err;
     console.log(result);
   });
+
+  con.end();
 
   it('should check the credit card 3ds authorization payment process', async () => {
 
@@ -94,6 +96,13 @@ describe('Credit Card 3-D Secure Authorization test', () => {
 
     await waitForAlert(driver, 10000);
     await checkConfirmationPage(driver, 'Thank you for your purchase!');
+
+    let con = mysql.createConnection({
+      host: "127.0.0.1",
+      user: "travis",
+      password: "",
+      database: "magento"
+    });
 
     con.query("SELECT * FROM sales_payment_transaction", function (err, result, fields) {
       if (err) throw err;
